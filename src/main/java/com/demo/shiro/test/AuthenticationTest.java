@@ -36,5 +36,9 @@ public class AuthenticationTest {
 		subject.login(token);
 		
 		System.out.println("isAuthenticated:"+subject.isAuthenticated());
+		
+		subject.logout();
+		
+		System.out.println("isAuthenticated:"+subject.isAuthenticated());
 	}
 }
