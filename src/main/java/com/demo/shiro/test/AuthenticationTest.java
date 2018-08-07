@@ -19,7 +19,8 @@ public class AuthenticationTest {
 	SimpleAccountRealm simpleAccountRealm=new SimpleAccountRealm();
 	@Before
 	public void addUser() {
-		simpleAccountRealm.addAccount("Mark","123456");
+		//角色可以同时是多个
+		simpleAccountRealm.addAccount("Mark","123456","admin","user");
 	}
 	@Test
 	public void testAuthentication() {
@@ -37,8 +38,12 @@ public class AuthenticationTest {
 		
 		System.out.println("isAuthenticated:"+subject.isAuthenticated());
 		
-		subject.logout();
+//		subject.logout();
+//		
+//		System.out.println("isAuthenticated:"+subject.isAuthenticated());
 		
-		System.out.println("isAuthenticated:"+subject.isAuthenticated());
+		
+		// subject.checkRole("admin");
+		subject.checkRoles("admin","user");
 	}
 }
