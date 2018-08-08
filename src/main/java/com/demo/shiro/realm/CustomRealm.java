@@ -11,9 +11,10 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.hamcrest.Condition.Step;
+import org.apache.shiro.util.ByteSource;
 
 /** 
 * @author nilzxq
@@ -24,7 +25,8 @@ public class CustomRealm extends AuthorizingRealm{
 
 	Map<String,String> userMap=new HashMap<String, String>();
 	{
-		userMap.put("Mark", "123456");
+		//md5加密之后
+		userMap.put("Mark", "283538989cef48f3d7d8a1c1bdf2008f");
 		super.setName("customRealm");
 	}
 	@Override
@@ -69,6 +71,8 @@ public class CustomRealm extends AuthorizingRealm{
 			return null;
 		}
 		SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo("Mark",password,"customRealm");
+		//加盐
+		authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes("Mark"));
 		return authenticationInfo;
 	}
 
@@ -82,4 +86,9 @@ public class CustomRealm extends AuthorizingRealm{
 		return userMap.get(userName);
 	}
 
+	public static void main(String[] args) {
+		//加盐 一般用随机数 这里写死了用Mark
+		Md5Hash md5Hash=new Md5Hash("123456","Mark");
+		System.out.println(md5Hash.toString());
+	}
 }
